@@ -1,30 +1,444 @@
-html, body {
-    background-color: lightblue;
-    font-family: Arial, sans-serif;
+/* ====================================
+   NHK Japan Theme - CSE 340 Service Network
+   Clean, elegant, functional Japanese design aesthetic
+   ==================================== */
+
+/* ---------- RESET & BASE STYLES ---------- */
+* {
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    nav {
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
+    font-family: 'Helvetica Neue', 'Noto Sans', 'Hiragino Kaku Gothic ProN', 'Meiryo', Arial, sans-serif;
+    line-height: 1.7;
+    color: #1a1a1a;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
 
-        li {
-            display: inline;
-            margin-right: 15px;
-        }
+/* ---------- MAIN CONTENT ---------- */
+main {
+    flex: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 2rem 3rem 2rem;
+    width: 100%;
+}
 
-        a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
+/* ---------- TYPOGRAPHY - Japanese minimalist style ---------- */
+h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid #e60012;
+    display: inline-block;
+    letter-spacing: 0.05em;
+}
 
-            &:hover {
-                color: #0066cc;
-            }
-        }
+h2 {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #2c2c2c;
+    margin: 2rem 0 1rem 0;
+    position: relative;
+    padding-left: 0.75rem;
+}
+
+h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    bottom: 0.15em;
+    width: 4px;
+    background-color: #e60012;
+}
+
+p {
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #3d3d3d;
+}
+
+/* ---------- NAVIGATION - NHK style red accent bar ---------- */
+nav {
+    background-color: #1a1a1a;
+    border-bottom: 3px solid #e60012;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav ul {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    list-style: none;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+nav li {
+    margin: 0;
+    position: relative;
+}
+
+nav a {
+    display: inline-block;
+    padding: 1rem 1.25rem;
+    color: #e0e0e0;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    letter-spacing: 0.08em;
+    position: relative;
+}
+
+nav a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1rem;
+    right: 1rem;
+    height: 2px;
+    background-color: #e60012;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+nav a:hover::before {
+    transform: scaleX(1);
+}
+
+nav a:hover {
+    color: #ffffff;
+}
+
+/* Active menu item */
+nav a.active {
+    color: #ffffff;
+}
+
+nav a.active::before {
+    transform: scaleX(1);
+}
+
+/* ---------- LOGO IMAGE - with subtle Japanese framing ---------- */
+.main-logo {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    border: 1px solid #e5e5e5;
+    background-color: #ffffff;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.main-logo:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* ---------- FOOTER - Minimalist Japanese style ---------- */
+footer {
+    background-color: #1a1a1a;
+    color: #999999;
+    text-align: center;
+    padding: 2rem;
+    margin-top: auto;
+    border-top: 1px solid #2c2c2c;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #999999;
+}
+
+/* ---------- JAPANESE INSPIRED COMPONENTS ---------- */
+
+/* Card - like NHK news/article cards */
+.card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.card:hover {
+    border-color: #e60012;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card h3 {
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    color: #1a1a1a;
+}
+
+.card p {
+    font-size: 0.95rem;
+    margin-bottom: 0;
+    color: #666666;
+}
+
+/* Subtle date tag like NHK */
+.date-tag {
+    font-size: 0.75rem;
+    color: #999999;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Category label */
+.category-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #e60012;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+/* Grid layout for listings */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+/* Button - Japanese minimal style */
+.btn {
+    display: inline-block;
+    background: transparent;
+    color: #1a1a1a;
+    padding: 0.6rem 1.5rem;
+    border: 1px solid #cccccc;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #e60012;
+    border-color: #e60012;
+    color: #ffffff;
+}
+
+/* Primary button (NHK accent) */
+.btn-primary {
+    background-color: #e60012;
+    border-color: #e60012;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #b3000e;
+    border-color: #b3000e;
+}
+
+/* Container utility */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Section spacing */
+.section {
+    margin: 3rem 0;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Breadcrumb navigation (NHK style) */
+.breadcrumb {
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+    color: #999999;
+}
+
+.breadcrumb a {
+    color: #666666;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: #e60012;
+    text-decoration: underline;
+}
+
+/* Sidebar for organization/project pages */
+.sidebar {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    padding: 1.5rem;
+}
+
+.sidebar h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e60012;
+    display: inline-block;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 0.75rem;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #3d3d3d;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.sidebar a:hover {
+    color: #e60012;
+}
+
+/* ---------- RESPONSIVE DESIGN ---------- */
+@media (max-width: 768px) {
+    main {
+        padding: 1.5rem;
     }
-}  
+
+    h1 {
+        font-size: 1.8rem;
+        display: block;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    nav ul {
+        padding: 0 0.5rem;
+        gap: 0;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    nav a {
+        padding: 0.8rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    nav a::before {
+        left: 0.5rem;
+        right: 0.5rem;
+    }
+
+    .grid {
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        text-align: center;
+        display: block;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+        text-align: left;
+    }
+
+    p {
+        font-size: 0.95rem;
+        text-align: left;
+    }
+
+    nav ul {
+        flex-direction: column;
+        padding: 0.5rem 0;
+        gap: 0.25rem;
+    }
+
+    nav a {
+        padding: 0.6rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    nav a::before {
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .main-logo {
+        padding: 0.5rem;
+        margin: 1.5rem auto;
+    }
+
+    .breadcrumb {
+        font-size: 0.7rem;
+    }
+}
+
+/* ---------- PRINT STYLES (NHK good practice) ---------- */
+@media print {
+    nav, footer {
+        display: none;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .main-logo {
+        border: none;
+        box-shadow: none;
+    }
+}
