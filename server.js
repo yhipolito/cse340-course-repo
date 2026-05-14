@@ -2,6 +2,7 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
+import { getAllOrganizations } from './src/models/organizations.js';
 
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -35,7 +36,20 @@ app.get('/', async (req, res) => {
     res.render('home', { title });
 });
 
+// app.get('/organizations', async (req, res) => {
+//     const title = 'Our Partner Organizations';
+//     res.render('organizations', { title });
+// });
+
+// the code previously commented served to render just organizations page.
+// the next code will call all organizations and will trigger the event handler.
+
+// use the getAllOrganizations function to get the list of organizations.
+// this is a route handler.
 app.get('/organizations', async (req, res) => {
+    const organizations = await getAllOrganizations();
+    console.log(organizations);
+      
     const title = 'Our Partner Organizations';
     res.render('organizations', { title });
 });
