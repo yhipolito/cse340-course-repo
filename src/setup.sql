@@ -59,3 +59,70 @@ VALUES
 
 -- 4. Verify that all 15 rows exist in your Render database right now
 SELECT project_id, title, location FROM service_project;
+
+-- ========================================
+-- Categories Table
+-- ========================================
+CREATE TABLE IF NOT EXISTS category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- ========================================
+-- Junction Table: Many-to-Many Link
+-- ========================================
+CREATE TABLE IF NOT EXISTS project_category (
+    project_id INT NOT NULL REFERENCES service_project(project_id) ON DELETE CASCADE,
+    category_id INT NOT NULL REFERENCES category(category_id) ON DELETE CASCADE,
+    PRIMARY KEY (project_id, category_id) -- Prevents assigning the same category twice
+);
+
+-- Wipe old junction and category data to reset the state cleanly
+TRUNCATE TABLE project_category, category RESTART IDENTITY CASCADE;
+
+-- ========================================
+-- Insert Sample Data: Categories
+-- ========================================
+INSERT INTO category (name)
+VALUES 
+('Construction & Repair'),
+('Environmental & Agriculture'),
+('Community Outreach & Care');
+
+-- ========================================
+-- Insert Sample Data: Project Linkages
+-- ========================================
+-- This links all 15 of your existing projects to at least one category.
+INSERT INTO project_category (project_id, category_id)
+VALUES
+-- 🏢 Projects 1 to 5 belong to Category 1 (Construction & Repair)
+(1, 1), 
+(2, 1), 
+(3, 1), 
+(4, 1), 
+(5, 1),
+
+-- 🚜 Projects 6 to 10 belong to Category 2 (Environmental & Agriculture)
+(6, 2), 
+(7, 2), 
+(8, 2), 
+(9, 2), 
+(10, 2),
+
+-- 🤝 Projects 11 to 15 belong to Category 3 (Community Outreach & Care)
+(11, 3), 
+(12, 3), 
+(13, 3), 
+(14, 3), 
+(15, 3),
+
+-- Cross-linking extra tags to satisfy "one or more" requirement:
+(2, 2),  -- Park Bench installation also relates to Environment
+(14, 2); -- Riverside Cleanup also relates to Environment
+
+-- Verification query to check your work in pgAdmin
+SELECT p.title, c.name AS category_name
+FROM project_category pc
+JOIN service_project p USING (project_id)
+JOIN category c USING (category_id)
+ORDER BY c.name, p.title;

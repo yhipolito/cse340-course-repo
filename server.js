@@ -4,6 +4,7 @@ import path from 'path';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
 import { getAllProjects } from './src/models/projects.js';
+import { getAllCategories } from './src/models/categories.js';
 
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -61,9 +62,20 @@ app.get('/projects', async (req, res) => {
     }
 });
 
+// use the getAllCategories function to get the list of categories.
+// this is a route handler.
 app.get('/categories', async (req, res) => {
-    const title = 'Categories';
-    res.render('categories', { title });
+    try {
+        // 1. Fetch all categories from your database model
+        const categories = await getAllCategories();
+        const title = 'Categories';
+
+        // 2. Pass the categories array into your categories.ejs view
+        res.render('categories', { title, categories });
+    } catch (error) {
+        console.error('Error loading categories page:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 app.listen(PORT, async () => {
