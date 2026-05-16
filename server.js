@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
+import { getAllProjects } from './src/models/projects.js';
 
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -45,9 +46,19 @@ app.get('/organizations', async (req, res) => {
     res.render('organizations', { title, organizations });
 });
 
+// Find this route in your server.js file and update it:
 app.get('/projects', async (req, res) => {
-    const title = 'Service Projects';
-    res.render('projects', { title });
+    try {
+        // 1. Fetch the data from your model
+        const projects = await getAllProjects();
+        const title = 'Service Projects';
+
+        // 2. Pass the "projects" array variable into your EJS view
+        res.render('projects', { title, projects });
+    } catch (error) {
+        console.error('Error loading projects view:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 app.get('/categories', async (req, res) => {
@@ -60,6 +71,10 @@ app.listen(PORT, async () => {
     await testConnection();
     console.log(`Server is running at http://127.0.0.1:${PORT}`);
     console.log(`Environment: ${NODE_ENV}`);
+    // --- call getAllProjects() and display results to the console ---
+    const projects = await getAllProjects();
+    console.log('Verified Service Projects:', projects);
+    // ------------------------------------------------
   } catch (error) {
     console.error('Error connecting to the database:', error);
   }
