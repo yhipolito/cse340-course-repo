@@ -2,9 +2,7 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
-import { getAllOrganizations } from './src/models/organizations.js';
-import { getAllProjects } from './src/models/projects.js';
-import { getAllCategories } from './src/models/categories.js';
+import router from './src/routes.js'
 
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -44,60 +42,8 @@ app.use((req, res, next) => {
     next();
 });
 
-/**
- * Routes
- */
-app.get('/', async (req, res) => {
-    const title = 'Home';
-    res.render('home', { title });
-});
-
-// use the getAllOrganizations function to get the list of organizations.
-// this is a route handler.
-app.get('/organizations', async (req, res) => {
-    const organizations = await getAllOrganizations();
-    const title = 'Our Partner Organizations';
-
-    res.render('organizations', { title, organizations });
-});
-
-// Find this route in your server.js file and update it:
-app.get('/projects', async (req, res) => {
-    try {
-        // 1. Fetch the data from your model
-        const projects = await getAllProjects();
-        const title = 'Service Projects';
-
-        // 2. Pass the "projects" array variable into your EJS view
-        res.render('projects', { title, projects });
-    } catch (error) {
-        console.error('Error loading projects view:', error.message);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-// use the getAllCategories function to get the list of categories.
-// this is a route handler.
-app.get('/categories', async (req, res) => {
-    try {
-        // 1. Fetch all categories from your database model
-        const categories = await getAllCategories();
-        const title = 'Categories';
-
-        // 2. Pass the categories array into your categories.ejs view
-        res.render('categories', { title, categories });
-    } catch (error) {
-        console.error('Error loading categories page:', error.message);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-// Test route for 500 errors
-app.get('/test-error', (req, res, next) => {
-    const err = new Error('This is a test error');
-    err.status = 500;
-    next(err);
-});
+// Use the imported router to handle routes
+app.use(router);
 
 // Catch-all route for 404 errors
 app.use((req, res, next) => {
@@ -131,11 +77,7 @@ app.listen(PORT, async () => {
   try {
     await testConnection();
     console.log(`Server is running at http://127.0.0.1:${PORT}`);
-    console.log(`Environment: ${NODE_ENV}`);
-    // --- call getAllProjects() and display results to the console ---
-    const projects = await getAllProjects();
-    console.log('Verified Service Projects:', projects);
-    // ------------------------------------------------
+    console.log(`Environment: ${NODE_ENV}`);    
   } catch (error) {
     console.error('Error connecting to the database:', error);
   }
