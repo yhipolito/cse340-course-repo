@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+
+    <main>
+        <% if (project) { %>
+            <% 
+               const formattedDate = new Date(project.date).toLocaleDateString('en-US', {
+                   year: 'numeric',
+                   month: 'long',
+                   day: 'numeric'
+               });
+            %>
+            <h1><%= project.title %></h1>
+            
+            <p><strong>Description:</strong> <%= project.description %></p>
+            <p><strong>Date:</strong> <%= formattedDate %></p>
+            <p><strong>Location:</strong> <%= project.location %></p>
+            
+            <p><strong>Partner Organization:</strong> 
+                <a href="/organization/<%= project.organization_id %>">
+                    <%= project.organization_name %>
+                </a>
+            </p>
+        <% } else { %>
+            <h1>Project Not Found</h1>
+            <p>The requested service project could not be found.</p>
+        <% } %>
+    </main>
+
+<%- include('partials/footer') %>
