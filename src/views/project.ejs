@@ -20,6 +20,18 @@
                     <%= project.organization_name %>
                 </a>
             </p>
+
+            <!-- ADDED PER REQUIREMENTS: Loop through and display category tags -->
+            <p><strong>Categories:</strong>
+                <% if (categories && categories.length > 0) { %>
+                    <% categories.forEach((cat, index) => { %>
+                        <a href="/category/<%= cat.category_id %>"><%= cat.name %></a><% if (index < categories.length - 1) { %>, <% } %>
+                    <% }); %>
+                <% } else { %>
+                    <span>None</span>
+                <% } %>
+            </p>
+
         <% } else { %>
             <h1>Project Not Found</h1>
             <p>The requested service project could not be found.</p>

@@ -1,11 +1,15 @@
 <%- include('partials/header') %>
 
     <main>
-        <h1>Categories</h1>
-        <h2>Available Service Categories</h2>
+        <h1>Service Categories</h1>
         <ul>
             <% categories.forEach(category => { %>
-                <li><%= category.name %></li>
+                <li>
+                    <!-- Updated: Wrapped category name in a dynamic detail route link -->
+                    <a href="/category/<%= category.category_id %>">
+                        <%= category.name %>
+                    </a>
+                </li>
             <% }); %>
         </ul>
     </main>
