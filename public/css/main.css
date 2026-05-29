@@ -442,3 +442,37 @@ footer p {
         box-shadow: none;
     }
 }
+/* ---------- FLASH MESSAGES (Centered NHK News Style) ---------- */
+.alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    width: 90%;
+    max-width: 450px;
+    
+    /* Structure rules to keep the box thick and robust */
+    min-height: 80px;        
+    display: flex;           
+    align-items: center;     
+    justify-content: center; 
+    
+    padding: 20px 30px;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-align: center;
+    border-radius: 0px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    border: none;
+}
+
+/* NHK Success State - Returning to your solid rich green layout */
+.alert.success {
+    color: #ffffff;                  /* Crisp white text */
+    background-color: #00875a;       /* Your original solid green background */
+    border-left: 6px solid #005234;  /* Deep dark green accent line */
+}
