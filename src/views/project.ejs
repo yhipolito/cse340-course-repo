@@ -31,6 +31,9 @@
                     <span>None</span>
                 <% } %>
             </p>
+            <!-- Grouping your edit controls safely inside the project check -->
+            <p><a href="/assign-categories/<%= project.project_id %>">Edit Categories</a></p>  
+            <p><a href="/edit-project/<%= project.project_id %>">Edit Project</a></p>
 
         <% } else { %>
             <h1>Project Not Found</h1>
@@ -38,6 +41,5 @@
         <% } %>
     </main>
 
-  <a href="/assign-categories/<%= project.project_id %>">Edit Categories</a>  
-
+  
 <%- include('partials/footer') %>
