@@ -33,6 +33,16 @@ import {
     categoryValidation
 } from './controllers/categories.js';
 
+import { 
+    showUserRegistrationForm, 
+    processUserRegistrationForm,
+    showLoginForm,
+    processLoginForm,
+    processLogout,
+    requireLogin,
+    showDashboard 
+} from './controllers/users.js';
+
 const router = express.Router();
 
 router.get('/', showHomePage);
@@ -94,6 +104,18 @@ router.post('/new-category', categoryValidation, processNewCategoryForm);
 
 // Route to handle edit category form submission
 router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
+
+// User registration routes
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
+
+// User login routes
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.get('/logout', processLogout);
+
+// Protected dashboard route
+router.get('/dashboard', requireLogin, showDashboard);
 
 // error-handling routes
 router.get('/test-error', testErrorPage);
