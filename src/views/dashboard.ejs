@@ -4,9 +4,14 @@
     <h1><%= title %></h1>
 
     <h2>Dashboard</h2>
-    <p>Name: <%= name %></p>
-    <p>Username: <%= email %></p>
-
+    <p>Name: <%= user.name %></p>
+    <p>Username: <%= user.email %></p>
+    <% if (user.role_name === 'admin') { %>
+    <div class="admin-controls" style="margin-top: 20px; padding: 15px; background-color: #fff3cd; border: 1px solid #ffeeba;">
+        <h3>Administrative Controls</h3>
+        <p><a href="/users" class="btn btn-primary">Manage Registered Users</a></p>
+    </div>
+    <% } %>
 </main>
 
 <%- include('partials/footer') %>

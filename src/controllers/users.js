@@ -1,5 +1,9 @@
 import bcrypt from 'bcrypt';
-import { createUser, authenticateUser } from '../models/users.js';
+import { 
+    createUser, 
+    authenticateUser,
+    getAllUsersWithRoles 
+} from '../models/users.js';
 
 const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register' });
@@ -92,12 +96,12 @@ const requireLogin = (req, res, next) => {
     next();
 };
 
+// 1. Show Dashboard Controller
 const showDashboard = (req, res) => {
-    const user = req.session.user;
+    // Pass the user object so the view can check if they are an admin
     res.render('dashboard', { 
-        title: 'Dashboard',
-        name: user.name,
-        email: user.email
+        title: 'Dashboard', 
+        user: req.session.user 
     });
 };
 
@@ -119,12 +123,30 @@ const requireRole = (role) => {
         // Check if user's role matches the required role
         if (req.session.user.role_name !== role) {
             req.flash('error', 'You do not have permission to access this page.');
-            return res.redirect('/');
+            return res.redirect('/dashboard');
         }
 
         // User has required role, continue
         next();
     };
+};
+
+// 2. Show All Users Controller (Admin Only)
+const showAllUsers = async (req, res, next) => {
+    try {
+        // Fetch users from the database model
+        const usersList = await getAllUsersWithRoles();
+        
+        // Render the users.ejs template view
+        res.render('users', { 
+            title: 'Registered Users', 
+            users: usersList 
+        });
+    } catch (error) {
+        console.error('Error fetching users for admin view:', error);
+        req.flash('error', 'Unable to load the users directory.');
+        res.redirect('/dashboard');
+    }
 };
 
 export { 
@@ -135,5 +157,6 @@ export {
     processLogout,
     requireLogin,
     showDashboard,
-    requireRole
+    requireRole,
+    showAllUsers
 };
