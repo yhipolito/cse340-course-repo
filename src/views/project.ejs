@@ -31,6 +31,31 @@
                     <span>None</span>
                 <% } %>
             </p>
+
+            <!-- ======================================================= -->
+            <!-- VOLUNTEER SECTION (Only visible to logged-in users)     -->
+            <!-- ======================================================= -->
+            <% if (user) { %>
+                <div class="volunteer-section" style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+                    <% if (isVolunteering) { %>
+                        <p style="color: #2e7d32; font-weight: bold; margin-bottom: 10px;">
+                            🎉 You are volunteering for this project
+                        </p>
+                        <form action="/project/<%= project.project_id %>/unvolunteer" method="POST" style="margin: 0;">
+                            <button type="submit" class="btn-unvolunteer" style="background: none; border: none; color: #d32f2f; text-decoration: underline; cursor: pointer; padding: 0; font-size: inherit; font-family: inherit;">
+                                Remove myself as a volunteer
+                            </button>
+                        </form>
+                    <% } else { %>
+                        <form action="/project/<%= project.project_id %>/volunteer" method="POST" style="margin: 0;">
+                            <button type="submit" class="btn-volunteer" style="background-color: #1976d2; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                                Volunteer for this project
+                            </button>
+                        </form>
+                    <% } %>
+                </div>
+            <% } %>
+
             <!-- Grouping your edit controls safely inside the project check -->
             <% if (user && user.role_name === 'admin') { %>
                 <p><a href="/assign-categories/<%= project.project_id %>">Edit Categories</a></p>  
@@ -42,5 +67,4 @@
         <% } %>
     </main>
 
-  
 <%- include('partials/footer') %>

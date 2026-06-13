@@ -45,6 +45,11 @@ import {
     showAllUsers 
 } from './controllers/users.js';
 
+import { 
+    processJoinProject, 
+    processLeaveProject 
+} from './controllers/volunteer.js';
+
 const router = express.Router();
 
 router.get('/', showHomePage);
@@ -118,6 +123,10 @@ router.get('/logout', processLogout);
 
 // Protected dashboard route
 router.get('/dashboard', requireLogin, showDashboard);
+
+// Volunteer action routes (Protected by your login middleware)
+router.post('/project/:id/volunteer', requireLogin, processJoinProject);
+router.post('/project/:id/unvolunteer', requireLogin, processLeaveProject);
 
 // Add the new route endpoint
 router.get('/users', requireRole('admin'), showAllUsers);

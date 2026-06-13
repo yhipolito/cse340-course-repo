@@ -4,6 +4,7 @@ import {
     authenticateUser,
     getAllUsersWithRoles 
 } from '../models/users.js';
+import { getProjectsByUser } from '../models/volunteer.js';
 
 const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register' });
@@ -96,13 +97,31 @@ const requireLogin = (req, res, next) => {
     next();
 };
 
-// 1. Show Dashboard Controller
-const showDashboard = (req, res) => {
-    // Pass the user object so the view can check if they are an admin
-    res.render('dashboard', { 
-        title: 'Dashboard', 
-        user: req.session.user 
-    });
+// 1. Show Dashboard Controller (Updated to fetch volunteer project history)
+const showDashboard = async (req, res) => {
+    try {
+        const userId = req.session.user.user_id;
+        
+        // Fetch all projects this specific user volunteered for
+        const volunteeredProjects = await getProjectsByUser(userId);
+
+        // Pass the projects list down into the dashboard view template
+        res.render('dashboard', { 
+            title: 'Dashboard', 
+            user: req.session.user,
+            volunteeredProjects: volunteeredProjects
+        });
+    } catch (error) {
+        console.error('Error loading dashboard projects:', error);
+        req.flash('error', 'Unable to load your volunteer schedule.');
+        
+        // Failsafe fallback: renders the dashboard cleanly even if the DB query errors out
+        res.render('dashboard', { 
+            title: 'Dashboard', 
+            user: req.session.user,
+            volunteeredProjects: [] 
+        });
+    }
 };
 
 /**

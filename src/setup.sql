@@ -148,3 +148,42 @@ CREATE TABLE users (
     role_id INTEGER REFERENCES roles(role_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- ========================================
+-- Project Volunteers Table Setup
+-- ========================================
+CREATE TABLE IF NOT EXISTS project_volunteer (
+    user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    project_id INT NOT NULL REFERENCES service_project(project_id) ON DELETE CASCADE,
+    enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, project_id) -- Prevents duplicate sign-ups
+);
+
+-- Wipe old volunteer entries to reset the state cleanly
+TRUNCATE TABLE project_volunteer RESTART IDENTITY CASCADE;
+
+-- ========================================
+-- Insert Sample Data: Project Volunteers
+-- ========================================
+-- Using your real user IDs: 2, 4, and 5
+INSERT INTO project_volunteer (user_id, project_id)
+VALUES
+-- User 2 volunteers for three different projects
+(2, 1),
+(2, 2),
+(2, 11),
+
+-- User 4 volunteers for two different projects
+(4, 1),
+(4, 6),
+
+-- User 5 volunteers for two different projects
+(5, 11),
+(5, 12);
+
+-- Verification query to check your work in pgAdmin/Render
+SELECT u.name AS volunteer_name, sp.title AS project_title
+FROM project_volunteer pv
+JOIN users u USING (user_id)
+JOIN service_project sp USING (project_id)
+ORDER BY u.name, sp.title;

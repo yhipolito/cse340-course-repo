@@ -4,7 +4,7 @@ import { getCategoriesByProjectId } from '../models/categories.js';
 import { createProject } from '../models/projects.js';
 import { getAllOrganizations } from '../models/organizations.js';
 import { body, validationResult } from 'express-validator';
-
+import { getProjectsByUser } from '../models/volunteer.js';
 
 const projectValidation = [
     body('title')
@@ -38,14 +38,42 @@ const showProjectsPage = async (req, res) => {
     res.render('projects', { title, projects });
 };  
 
+// const showProjectDetailsPage = async (req, res) => {
+//     const id = req.params.id;
+//     const project = await getProjectDetails(id);
+//     const categories = await getCategoriesByProjectId(id); // Added to fetch categories
+//     const title = 'Project Details';
+
+//     // Pass the categories array into the view template
+//     res.render('project', { title, project, categories });
+// };
+
 const showProjectDetailsPage = async (req, res) => {
     const id = req.params.id;
     const project = await getProjectDetails(id);
-    const categories = await getCategoriesByProjectId(id); // Added to fetch categories
+    const categories = await getCategoriesByProjectId(id);
     const title = 'Project Details';
 
-    // Pass the categories array into the view template
-    res.render('project', { title, project, categories });
+    // 1. Default to false for non-logged-in users
+    let isVolunteering = false;
+
+    // 2. If a user is logged in, check their signed-up status
+    if (req.session && req.session.user) {
+        const userId = req.session.user.user_id;
+        const volunteeredProjects = await getProjectsByUser(userId);
+        
+        // Match the project ID as an integer against the list
+        isVolunteering = volunteeredProjects.some(p => p.project_id === parseInt(id));
+    }
+
+    // 3. Pass the state and user object directly down into the EJS template
+    res.render('project', { 
+        title, 
+        project, 
+        categories, 
+        isVolunteering,
+        user: req.session.user 
+    });
 };
 
 const showNewProjectForm = async (req, res) => {
